@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity // 이 클래스가 DB 테이블(booth)과 연결된다는 표시
 @Getter // 모든 필드의 getter 자동 생성 (getName() 등)
@@ -21,6 +23,7 @@ public class Booth {
     private String organizer;
 
     @Enumerated(EnumType.STRING) // DB에 "PUB" 같은 이름으로 저장 (숫자 저장 X)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // ← 추가: DB 컬럼이 VARCHAR라고 알려 줌 (MySQL ENUM 타입으로 착각 방지)
     @Column(nullable = false, length = 20)
     private BoothCategory category;
 
