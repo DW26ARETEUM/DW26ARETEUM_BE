@@ -4,6 +4,7 @@ import com.dongduk.daedongje.chat.dto.ChatMessageRequest;
 import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.service.ChatMessageService;
 import com.dongduk.daedongje.global.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ChatMessageController {
     @PostMapping
     public ResponseEntity<ApiResponse<ChatMessageResponse>> saveMessage(
             @RequestHeader("X-Client-Id") String clientId,
-            @RequestBody ChatMessageRequest request
+            @Valid @RequestBody ChatMessageRequest request
     ) {
         ChatMessageResponse response =
                 chatMessageService.saveMessage(clientId, request);
