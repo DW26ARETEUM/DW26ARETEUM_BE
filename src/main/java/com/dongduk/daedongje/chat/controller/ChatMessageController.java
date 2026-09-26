@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chat/messages")
@@ -22,6 +24,16 @@ public class ChatMessageController {
     ) {
         ChatMessageResponse response =
                 chatMessageService.saveMessage(clientId, request);
+
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getRecentMessages(
+            @RequestParam(defaultValue = "50") int limit
+    ) {
+        List<ChatMessageResponse> response =
+                chatMessageService.getRecentMessages(limit);
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
