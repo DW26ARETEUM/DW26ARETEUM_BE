@@ -30,4 +30,7 @@ public class BoothOperation {
 
     @Column(nullable = false)
     private Integer mapNumber; // 그날 그 분류 안에서의 배치도 칸 번호
+
+    @Column(length = 255)
+    private String locationImagePath; // 해당 운영 날짜의 위치 이미지 경로. DB 컬럼명: location_image_path
 }
