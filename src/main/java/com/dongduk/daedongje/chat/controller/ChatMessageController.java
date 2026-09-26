@@ -57,8 +57,8 @@ public class ChatMessageController {
     public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getRecentMessages(
             @RequestParam(defaultValue = "50") int limit
     ) {
-        if (limit <= 0) {
-            throw new InvalidRequestException("limit은 1 이상이어야 합니다.");
+        if (limit <= 0 || limit > 100) {
+            throw new InvalidRequestException("limit은 1 이상 100 이하이어야 합니다.");
         }
 
         List<ChatMessageResponse> response =
