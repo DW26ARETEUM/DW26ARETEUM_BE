@@ -48,7 +48,7 @@ INSERT INTO booth (id, name, organizer, category, location_name) VALUES
  (28, 'MOTIF',          '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
  (29, 'moss404',        '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
  (30, '어서오솜',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
- (31, '이상 <ideal>',          '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (31, '이상 <!deal>',          '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
 -- 솜컬렉션 (30일에 새로 생긴 부스)
  (32, 'Lucky flower',   '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
  (33, '말랑뽑뽑',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
