@@ -1,5 +1,6 @@
 package com.dongduk.daedongje.chat.controller;
 
+import com.dongduk.daedongje.chat.domain.ChatCategory;
 import com.dongduk.daedongje.chat.dto.ChatMessageRequest;
 import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.service.ChatMessageService;
@@ -46,6 +47,10 @@ public class ChatMessageController {
             throw new InvalidRequestException("메시지는 53자를 초과할 수 없습니다.");
         }
 
+        if (request.getCategory() == null) {
+            throw new InvalidRequestException("카테고리는 필수입니다.");
+        }
+
         ChatMessageResponse response =
                 chatMessageService.saveMessage(clientId, request);
 
@@ -55,14 +60,15 @@ public class ChatMessageController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getRecentMessages(
-            @RequestParam(defaultValue = "50") int limit
+            @RequestParam(defaultValue = "50") int limit,
+            @RequestParam(required = false) ChatCategory category
     ) {
         if (limit <= 0 || limit > 100) {
             throw new InvalidRequestException("limit은 1 이상 100 이하이어야 합니다.");
         }
 
         List<ChatMessageResponse> response =
-                chatMessageService.getRecentMessages(limit);
+                chatMessageService.getRecentMessages(limit, category);
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
