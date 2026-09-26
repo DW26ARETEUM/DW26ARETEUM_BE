@@ -5,9 +5,9 @@ import com.dongduk.daedongje.chat.dto.ChatMessageRequest;
 import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
