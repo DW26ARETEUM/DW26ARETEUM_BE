@@ -60,7 +60,7 @@ INSERT INTO booth (id, name, organizer, category, location_name) VALUES
  (44, '포토부스',             NULL, 'COMMITTEE', '동덕여대 운동장'),
  (45, '솜네마',               NULL, 'COMMITTEE', '동덕여대 운동장'),
  (46, '솜솜냠냠',             NULL, 'COMMITTEE', '동덕여대 운동장'),
- (47, '럭키컬 솜드롭',        NULL, 'COMMITTEE', '동덕여대 운동장'),
+ (47, '럭키컬 솜드롬',        NULL, 'COMMITTEE', '동덕여대 운동장'),
  (48, '솜 PICK! 팔찌메이커',  NULL, 'COMMITTEE', '동덕여대 운동장'),
  (49, '솜칭코',               NULL, 'COMMITTEE', '동덕여대 운동장'),
  (50, '솜솜포차 총괄운영',    NULL, 'COMMITTEE', '동덕여대 운동장'),
