@@ -72,3 +72,13 @@ SET icon_image_path =
         CONCAT('/images/booth-icons/', id - 60, '.png')
 WHERE category = 'PUB'
   AND id BETWEEN 61 AND 66;
+
+-- 일반부스 위치 이미지 연결
+-- 날짜별 지도 번호 1~14 → 이미지 4_1.png~4_14.png
+UPDATE booth_operation o
+    JOIN booth b ON b.id = o.booth_id
+    SET o.location_image_path =
+        CONCAT('/images/booth-locations/4_', o.map_number, '.png')
+WHERE b.category = 'GENERAL'
+  AND o.map_number BETWEEN 1 AND 14
+  AND o.operation_date IN ('2026-09-29', '2026-09-30');
