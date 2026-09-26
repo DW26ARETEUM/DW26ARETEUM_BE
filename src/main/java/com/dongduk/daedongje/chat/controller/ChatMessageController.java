@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -50,5 +51,19 @@ public class ChatMessageController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getRecentMessages(
+            @RequestParam(defaultValue = "50") int limit
+    ) {
+        if (limit <= 0 || limit > 100) {
+            throw new InvalidRequestException("limit은 1 이상 100 이하이어야 합니다.");
+        }
+
+        List<ChatMessageResponse> response =
+                chatMessageService.getRecentMessages(limit);
+
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }
