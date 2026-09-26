@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.dongduk.daedongje.booth.dto.BoothDetailResponse;
+import com.dongduk.daedongje.booth.service.BoothDetailService;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController // 메서드 반환값을 JSON으로 응답
 @RequestMapping("/api/v1/booths") // 이 컨트롤러의 공통 주소
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoothController {
 
     private final BoothService boothService;
+    private final BoothDetailService boothDetailService; // 부스 상세 조회 담당
 
     // 부스 목록 조회: GET /api/v1/booths?date=...&category=...&keyword=...&ids=...
     @GetMapping
@@ -29,5 +33,15 @@ public class BoothController {
             @RequestParam(required = false) List<Long> ids
     ) {
         return ApiResponse.success(boothService.getBooths(date, category, keyword, ids));
+    }
+
+    // 부스 상세 조회: GET /api/v1/booths/21
+    @GetMapping("/{boothId}")
+    public ApiResponse<BoothDetailResponse> getBoothDetail(
+            @PathVariable("boothId") Long boothId
+    ) {
+        return ApiResponse.success(
+                boothDetailService.getBoothDetail(boothId)
+        );
     }
 }
