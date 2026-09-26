@@ -82,3 +82,13 @@ UPDATE booth_operation o
 WHERE b.category = 'GENERAL'
   AND o.map_number BETWEEN 1 AND 14
   AND o.operation_date IN ('2026-09-29', '2026-09-30');
+
+-- 푸드트럭 위치 이미지 연결
+-- 날짜별 지도 번호 1~6 → 이미지 5_1.png~5_6.png
+UPDATE booth_operation o
+    JOIN booth b ON b.id = o.booth_id
+    SET o.location_image_path =
+        CONCAT('/images/booth-locations/5_', o.map_number, '.png')
+WHERE b.category = 'FOOD_TRUCK'
+  AND o.map_number BETWEEN 1 AND 6
+  AND o.operation_date IN ('2026-09-29', '2026-09-30');
