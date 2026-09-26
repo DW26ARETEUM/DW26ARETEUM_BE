@@ -5,6 +5,7 @@ import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.service.ChatMessageService;
 import com.dongduk.daedongje.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class ChatMessageController {
         ChatMessageResponse response =
                 chatMessageService.saveMessage(clientId, request);
 
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(response));
     }
 }
