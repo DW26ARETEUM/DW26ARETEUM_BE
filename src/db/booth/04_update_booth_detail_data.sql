@@ -39,3 +39,36 @@ UPDATE booth_operation o
 WHERE b.category = 'COMMITTEE'
   AND b.id BETWEEN 41 AND 50
   AND o.operation_date IN ('2026-09-29', '2026-09-30');
+
+-- 주점 위치 이미지 연결
+-- 29일: 61→1, 62→2, 63→3, 64→4
+-- 30일: 61→1, 62→2, 65→3, 66→4
+UPDATE booth_operation o
+    JOIN booth b ON b.id = o.booth_id
+    SET o.location_image_path =
+        CASE
+        WHEN b.id = 61
+        THEN '/images/booth-locations/3_1.png'
+        WHEN b.id = 62
+        THEN '/images/booth-locations/3_2.png'
+        WHEN b.id IN (63, 65)
+        THEN '/images/booth-locations/3_3.png'
+        WHEN b.id IN (64, 66)
+        THEN '/images/booth-locations/3_4.png'
+END
+WHERE b.category = 'PUB'
+  AND (
+      (o.operation_date = '2026-09-29'
+       AND b.id IN (61, 62, 63, 64))
+      OR
+      (o.operation_date = '2026-09-30'
+       AND b.id IN (61, 62, 65, 66))
+  );
+
+-- 주점 아이콘 연결
+-- 부스 ID 61~66 → 아이콘 1.png~6.png
+UPDATE booth
+SET icon_image_path =
+        CONCAT('/images/booth-icons/', id - 60, '.png')
+WHERE category = 'PUB'
+  AND id BETWEEN 61 AND 66;
