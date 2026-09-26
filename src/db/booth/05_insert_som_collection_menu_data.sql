@@ -165,3 +165,14 @@ VALUES
 (33, '말랑이 재료', NULL, '5,500₩', 2);
 
 COMMIT;
+
+-- 입력 결과 확인
+SELECT
+    b.id AS booth_id,
+    b.name,
+    COUNT(m.id) AS menu_count
+FROM booth b
+         LEFT JOIN booth_menu m ON m.booth_id = b.id
+WHERE b.category = 'SOM_COLLECTION'
+GROUP BY b.id, b.name
+ORDER BY b.id;

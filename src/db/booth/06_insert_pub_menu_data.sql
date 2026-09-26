@@ -70,3 +70,15 @@ VALUES
 (66, '궁채 푸주 무침', NULL, '4,000₩', 3);
 
 COMMIT;
+
+-- 부스별 메뉴 개수 확인
+SELECT
+    b.id AS booth_id,
+    b.name,
+    COUNT(m.id) AS menu_count
+FROM booth b
+         LEFT JOIN booth_menu m ON m.booth_id = b.id
+WHERE b.category = 'PUB'
+  AND b.id IN (61, 62, 63, 64, 65, 66)
+GROUP BY b.id, b.name
+ORDER BY b.id;
