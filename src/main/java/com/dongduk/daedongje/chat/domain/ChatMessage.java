@@ -24,4 +24,10 @@ public class ChatMessage {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    public ChatMessage(String clientId, String content) {
+        this.clientId = clientId;
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
 }
