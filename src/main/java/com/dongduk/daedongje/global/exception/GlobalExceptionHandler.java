@@ -6,6 +6,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import com.dongduk.daedongje.booth.exception.BoothNotFoundException;
+import org.springframework.http.HttpStatus;
 
 @RestControllerAdvice // 모든 컨트롤러에서 올라온 예외를 여기서 받아 처리
 public class GlobalExceptionHandler {
@@ -27,5 +29,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleBadParameter(Exception e) {
         return ResponseEntity.badRequest()
                 .body(ApiResponse.fail(INVALID_REQUEST_CODE, "잘못된 요청입니다."));
+    }
+
+    // 존재하지 않는 부스 요청 → 404 공통 오류 응답
+    @ExceptionHandler(BoothNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBoothNotFound(
+            BoothNotFoundException e
+    ) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.fail("BOOTH_NOT_FOUND", e.getMessage()));
     }
 }
