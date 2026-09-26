@@ -29,7 +29,7 @@ WHERE b.category = 'SOM_COLLECTION'
   )
   AND o.operation_date IN ('2026-09-29', '2026-09-30');
 
-롬-- 축운위 위치 이미지 연결
+-- 축운위 위치 이미지 연결
 -- 부스 ID 41~50 → 이미지 2_1.png~2_10.png
 -- 29일·30일 모두 같은 이미지를 사용합니다.
 UPDATE booth_operation o
