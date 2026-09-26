@@ -38,20 +38,20 @@ INSERT INTO booth (id, name, organizer, category, location_name) VALUES
  (18, '솜술병원', '한국건강증진원 서포터즈', 'GENERAL', '동덕여대 운동장'),
 
 -- 솜컬렉션 (29일)
- (21, '달팽이잡화점',  NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (22, '럭키보울',       NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (23, '미확인물체',     NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (24, '팅커롱',         NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (25, '흙에서 왔어요',  NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (26, '리본야호',       NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (27, '반짝냥이',       NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (28, 'MOTIF',          NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (29, 'moss404',        NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (30, '어서오솜',       NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (31, 'ideal',          NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
+ (21, '달팽이 잡화점',  '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (22, '럭키보울',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (23, '미확인물체',     '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (24, '팅커롱',         '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (25, '흙에서 왔어요',  '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (26, '리본야호',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (27, '반짝냥이',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (28, 'MOTIF',          '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (29, 'moss404',        '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (30, '어서오솜',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (31, '이상 <ideal>',          '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
 -- 솜컬렉션 (30일에 새로 생긴 부스)
- (32, 'Lucky flower',   NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
- (33, '말랑뽑뽑',       NULL, 'SOM_COLLECTION', '동덕여대 운동장'),
+ (32, 'Lucky flower',   '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
+ (33, '말랑뽑뽑',       '개인 운영', 'SOM_COLLECTION', '동덕여대 운동장'),
 
 -- 축운위 (29·30일 동일)
  (41, '솜체크인',             NULL, 'COMMITTEE', '동덕여대 운동장'),
@@ -138,8 +138,8 @@ INSERT INTO booth_operation (booth_id, operation_date, start_time, end_time, map
 (25, '2026-09-30', '15:00', '18:00', 5),
 (27, '2026-09-30', '18:00', '21:00', 6),
 (28, '2026-09-30', '12:00', '18:00', 7),
-(29, '2026-09-30', '15:00', '18:00', 8),
-(30, '2026-09-30', '15:00', '18:00', 9),
+(29, '2026-09-30', '12:00', '18:00', 8),
+(30, '2026-09-30', '12:00', '18:00', 9),
 (33, '2026-09-30', '12:00', '18:00', 10),
 
 -- ---------- 축운위 29일 ----------
