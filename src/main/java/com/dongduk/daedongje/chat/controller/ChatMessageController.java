@@ -5,7 +5,6 @@ import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.service.ChatMessageService;
 import com.dongduk.daedongje.global.exception.InvalidRequestException;
 import com.dongduk.daedongje.global.response.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +31,18 @@ public class ChatMessageController {
     @PostMapping
     public ResponseEntity<ApiResponse<ChatMessageResponse>> saveMessage(
             @RequestHeader("X-Client-Id") String clientId,
-            @Valid @RequestBody ChatMessageRequest request
+            @RequestBody ChatMessageRequest request
     ) {
         if (!isValidUuidV4(clientId)) {
             throw new InvalidRequestException("유효하지 않은 clientId입니다.");
+        }
+
+        if (request.getContent() == null || request.getContent().isBlank()) {
+            throw new InvalidRequestException("메시지는 비어 있을 수 없습니다.");
+        }
+
+        if (request.getContent().length() > 53) {
+            throw new InvalidRequestException("메시지는 53자를 초과할 수 없습니다.");
         }
 
         ChatMessageResponse response =
