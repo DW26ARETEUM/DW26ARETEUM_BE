@@ -26,17 +26,6 @@ public class  ChatSseService {
         emitter.onTimeout(() -> emitters.remove(emitterId));
         emitter.onError(error -> emitters.remove(emitterId));
 
-        // 새 메세지 없는 동안 connect 확인용 예외코드
-        try {
-            emitter.send(
-                    SseEmitter.event()
-                            .name("connect")
-                            .data("connected")
-            );
-        } catch (IOException e) {
-            emitters.remove(emitterId);
-        }
-
         return emitter;
     }
 
