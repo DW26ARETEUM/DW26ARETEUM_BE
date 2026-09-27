@@ -15,4 +15,26 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
             ChatCategory category,
             Pageable pageable
     );
+
+    List<ChatMessage> findAllByMessageIdLessThanOrderByMessageIdDesc(
+            Long messageId,
+            Pageable pageable
+    );
+
+    List<ChatMessage> findAllByCategoryAndMessageIdLessThanOrderByMessageIdDesc(
+            ChatCategory category,
+            Long messageId,
+            Pageable pageable
+    );
+
+    List<ChatMessage> findAllByMessageIdGreaterThanOrderByMessageIdAsc(
+            Long messageId,
+            Pageable pageable
+    );
+
+    List<ChatMessage> findAllByCategoryAndMessageIdGreaterThanOrderByMessageIdAsc(
+            ChatCategory category,
+            Long messageId,
+            Pageable pageable
+    );
 }
