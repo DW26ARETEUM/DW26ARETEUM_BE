@@ -29,4 +29,10 @@ public class Booth {
 
     @Column(nullable = false, length = 50)
     private String locationName; // DB 컬럼명은 자동으로 location_name이 됨
+
+    @Column(columnDefinition = "TEXT")
+    private String description; // 부스 상세 소개. 긴 내용을 저장할 수 있도록 TEXT 사용, 없으면 null
+
+    @Column(length = 255)
+    private String iconImagePath; // 주점 아이콘 이미지 경로. DB 컬럼명: icon_image_path, 없으면 null
 }

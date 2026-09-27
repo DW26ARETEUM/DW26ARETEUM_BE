@@ -11,6 +11,9 @@ spring:
     hibernate:
       ddl-auto: validate
 
+app:
+  image-base-url: ${IMAGE_BASE_URL:http://localhost:8080}
+  
 # 공연 수정·삭제 API 접근용 관리자 키 (로컬은 실행 설정의 환경 변수로 주입)
 admin:
   key: ${ADMIN_KEY}
