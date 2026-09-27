@@ -60,4 +60,18 @@ public class Performance {
         this.stage = stage;
         this.category = category;
     }
+
+    // 공연 정보 전체 수정
+    public void update(String title, String titleEn, String performer,
+                       LocalDate performanceDate, LocalTime startTime, LocalTime endTime,
+                       String stage, PerformanceCategory category) {
+        this.title = title;
+        this.titleEn = titleEn;
+        this.performer = performer;
+        this.performanceDate = performanceDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.stage = stage;
+        this.category = category;
+    }
 }
