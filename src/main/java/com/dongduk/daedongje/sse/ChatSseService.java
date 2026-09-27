@@ -38,7 +38,7 @@ public class  ChatSseService {
                                 .name("chat-message-created")
                                 .data(message)
                 );
-            } catch (IOException e) {
+            } catch (IOException | IllegalStateException e) {
                 emitters.remove(emitterId);
             }
         });
