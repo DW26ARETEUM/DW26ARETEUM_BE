@@ -1,5 +1,8 @@
 package com.dongduk.daedongje.chat.service;
 
+import com.dongduk.daedongje.sse.event.ChatMessageCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
+
 import com.dongduk.daedongje.chat.domain.ChatCategory;
 import com.dongduk.daedongje.chat.domain.ChatMessage;
 import com.dongduk.daedongje.chat.dto.ChatMessageRequest;
@@ -18,25 +21,39 @@ import java.util.List;
 public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public ChatMessageResponse saveMessage(String clientId, ChatMessageRequest request, ChatCategory category) {
+    public ChatMessageResponse saveMessage(
+            String clientId,
+            ChatMessageRequest request,
+            ChatCategory category
+    ) {
         ChatMessage chatMessage =
                 new ChatMessage(clientId, request.getContent(), category);
 
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
-        return ChatMessageResponse.builder()
+        ChatMessageResponse response = ChatMessageResponse.builder()
                 .messageId(savedMessage.getMessageId())
                 .clientId(savedMessage.getClientId())
                 .content(savedMessage.getContent())
                 .category(savedMessage.getCategory())
                 .createdAt(savedMessage.getCreatedAt())
                 .build();
+
+        eventPublisher.publishEvent(
+                new ChatMessageCreatedEvent(response)
+        );
+
+        return response;
     }
 
     @Transactional(readOnly = true)
-    public List<ChatMessageResponse> getRecentMessages(int limit, ChatCategory category) {
+    public List<ChatMessageResponse> getRecentMessages(
+            int limit,
+            ChatCategory category
+    ) {
         List<ChatMessage> messages;
 
         if (category == null) {
@@ -75,7 +92,10 @@ public class ChatMessageService {
 
         if (category == null) {
             messages = chatMessageRepository
-                    .findAllByMessageIdLessThanOrderByMessageIdDesc(before, pageable);
+                    .findAllByMessageIdLessThanOrderByMessageIdDesc(
+                            before,
+                            pageable
+                    );
         } else {
             messages = chatMessageRepository
                     .findAllByCategoryAndMessageIdLessThanOrderByMessageIdDesc(
@@ -110,7 +130,10 @@ public class ChatMessageService {
 
         if (category == null) {
             messages = chatMessageRepository
-                    .findAllByMessageIdGreaterThanOrderByMessageIdAsc(after, pageable);
+                    .findAllByMessageIdGreaterThanOrderByMessageIdAsc(
+                            after,
+                            pageable
+                    );
         } else {
             messages = chatMessageRepository
                     .findAllByCategoryAndMessageIdGreaterThanOrderByMessageIdAsc(
@@ -131,6 +154,7 @@ public class ChatMessageService {
                 .toList();
     }
 
+    // 메시지 검색 (최신순)
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> searchMessages(
             String keyword,
@@ -143,13 +167,13 @@ public class ChatMessageService {
 
         if (category == null) {
             messages = chatMessageRepository
-                    .findAllByContentContainingOrderByMessageIdAsc(
+                    .findAllByContentContainingOrderByMessageIdDesc(
                             keyword,
                             pageable
                     );
         } else {
             messages = chatMessageRepository
-                    .findAllByCategoryAndContentContainingOrderByMessageIdAsc(
+                    .findAllByCategoryAndContentContainingOrderByMessageIdDesc(
                             category,
                             keyword,
                             pageable
