@@ -19,9 +19,9 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
 
     @Transactional
-    public ChatMessageResponse saveMessage(String clientId, ChatMessageRequest request) {
+    public ChatMessageResponse saveMessage(String clientId, ChatMessageRequest request, ChatCategory category) {
         ChatMessage chatMessage =
-                new ChatMessage(clientId, request.getContent(), request.getCategory());
+                new ChatMessage(clientId, request.getContent(), category);
 
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 

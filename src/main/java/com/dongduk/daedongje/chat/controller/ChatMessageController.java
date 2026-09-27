@@ -47,12 +47,20 @@ public class ChatMessageController {
             throw new InvalidRequestException("메시지는 53자를 초과할 수 없습니다.");
         }
 
-        if (request.getCategory() == null) {
+        if (request.getCategory() == null || request.getCategory().isBlank()) {
             throw new InvalidRequestException("카테고리는 필수입니다.");
         }
 
+        ChatCategory category;
+
+        try {
+            category = ChatCategory.valueOf(request.getCategory());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidRequestException("유효하지 않은 카테고리입니다.");
+        }
+
         ChatMessageResponse response =
-                chatMessageService.saveMessage(clientId, request);
+                chatMessageService.saveMessage(clientId, request, category);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(response));
