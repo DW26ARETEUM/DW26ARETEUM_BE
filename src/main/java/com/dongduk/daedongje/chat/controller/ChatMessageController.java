@@ -80,6 +80,12 @@ public class ChatMessageController {
             );
         }
 
+        if (keyword != null && (before != null || after != null)) {
+            throw new InvalidRequestException(
+                    "검색어와 before 또는 after는 함께 사용할 수 없습니다."
+            );
+        }
+
         if (before != null && before <= 0) {
             throw new InvalidRequestException("before는 1 이상이어야 합니다.");
         }
