@@ -1,6 +1,5 @@
 package com.dongduk.daedongje.chat.dto;
 
-import com.dongduk.daedongje.chat.domain.ChatCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +8,5 @@ import lombok.NoArgsConstructor;
 public class ChatMessageRequest {
 
     private String content;
-
-    private ChatCategory category;
+    private String category;
 }
