@@ -67,16 +67,47 @@ public class ChatMessageController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getRecentMessages(
+    public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getMessages(
+            @RequestParam(required = false) Long before,
+            @RequestParam(required = false) Long after,
             @RequestParam(defaultValue = "50") int limit,
             @RequestParam(required = false) ChatCategory category
     ) {
-        if (limit <= 0 || limit > 100) {
-            throw new InvalidRequestException("limit은 1 이상 100 이하이어야 합니다.");
+        if (before != null && after != null) {
+            throw new InvalidRequestException(
+                    "before와 after는 동시에 사용할 수 없습니다."
+            );
         }
 
-        List<ChatMessageResponse> response =
-                chatMessageService.getRecentMessages(limit, category);
+        if (before != null && before <= 0) {
+            throw new InvalidRequestException("before는 1 이상이어야 합니다.");
+        }
+
+        if (after != null && after <= 0) {
+            throw new InvalidRequestException("after는 1 이상이어야 합니다.");
+        }
+
+        if (limit <= 0 || limit > 100) {
+            throw new InvalidRequestException(
+                    "limit은 1 이상 100 이하이어야 합니다."
+            );
+        }
+
+        List<ChatMessageResponse> response;
+
+        if (before != null) {
+            response = chatMessageService.getPreviousMessages(
+                    before, limit, category
+            );
+        } else if (after != null) {
+            response = chatMessageService.getAfterMessages(
+                    after, limit, category
+            );
+        } else {
+            response = chatMessageService.getRecentMessages(
+                    limit, category
+            );
+        }
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }

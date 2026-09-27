@@ -7,6 +7,7 @@ import com.dongduk.daedongje.chat.dto.ChatMessageResponse;
 import com.dongduk.daedongje.chat.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,5 +60,74 @@ public class ChatMessageService {
                         .build())
                 .toList()
                 .reversed();
+    }
+
+    // 이전 메세지 페이징 조회
+    @Transactional(readOnly = true)
+    public List<ChatMessageResponse> getPreviousMessages(
+            Long before,
+            int limit,
+            ChatCategory category
+    ) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        List<ChatMessage> messages;
+
+        if (category == null) {
+            messages = chatMessageRepository
+                    .findAllByMessageIdLessThanOrderByMessageIdDesc(before, pageable);
+        } else {
+            messages = chatMessageRepository
+                    .findAllByCategoryAndMessageIdLessThanOrderByMessageIdDesc(
+                            category,
+                            before,
+                            pageable
+                    );
+        }
+
+        return messages.stream()
+                .map(message -> ChatMessageResponse.builder()
+                        .messageId(message.getMessageId())
+                        .clientId(message.getClientId())
+                        .content(message.getContent())
+                        .category(message.getCategory())
+                        .createdAt(message.getCreatedAt())
+                        .build())
+                .toList()
+                .reversed();
+    }
+
+    // 이후 메세지 페이징 조회
+    @Transactional(readOnly = true)
+    public List<ChatMessageResponse> getAfterMessages(
+            Long after,
+            int limit,
+            ChatCategory category
+    ) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        List<ChatMessage> messages;
+
+        if (category == null) {
+            messages = chatMessageRepository
+                    .findAllByMessageIdGreaterThanOrderByMessageIdAsc(after, pageable);
+        } else {
+            messages = chatMessageRepository
+                    .findAllByCategoryAndMessageIdGreaterThanOrderByMessageIdAsc(
+                            category,
+                            after,
+                            pageable
+                    );
+        }
+
+        return messages.stream()
+                .map(message -> ChatMessageResponse.builder()
+                        .messageId(message.getMessageId())
+                        .clientId(message.getClientId())
+                        .content(message.getContent())
+                        .category(message.getCategory())
+                        .createdAt(message.getCreatedAt())
+                        .build())
+                .toList();
     }
 }
