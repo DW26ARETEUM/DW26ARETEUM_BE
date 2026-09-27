@@ -14,6 +14,7 @@ public class PerformanceExceptionHandler {
 
     private static final String NOT_FOUND_CODE = "PERFORMANCE_NOT_FOUND";
     private static final String INVALID_REQUEST_CODE = "COMMON_INVALID_REQUEST";
+    private static final String FORBIDDEN_CODE = "COMMON_FORBIDDEN";
 
     // 존재하지 않는 공연
     @ExceptionHandler(PerformanceNotFoundException.class)
@@ -27,5 +28,12 @@ public class PerformanceExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleNotReadable(HttpMessageNotReadableException e) {
         return ResponseEntity.badRequest()
                 .body(ApiResponse.fail(INVALID_REQUEST_CODE, "요청 형식이 올바르지 않습니다."));
+    }
+
+    // 관리자 키 불일치
+    @ExceptionHandler(AdminKeyMismatchException.class)
+    public ResponseEntity<ApiResponse<Void>> handleForbidden(AdminKeyMismatchException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.fail(FORBIDDEN_CODE, e.getMessage()));
     }
 }
