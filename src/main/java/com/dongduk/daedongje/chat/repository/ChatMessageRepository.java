@@ -37,4 +37,15 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
             Long messageId,
             Pageable pageable
     );
+
+    List<ChatMessage> findAllByContentContainingOrderByMessageIdAsc(
+            String keyword,
+            Pageable pageable
+    );
+
+    List<ChatMessage> findAllByCategoryAndContentContainingOrderByMessageIdAsc(
+            ChatCategory category,
+            String keyword,
+            Pageable pageable
+    );
 }

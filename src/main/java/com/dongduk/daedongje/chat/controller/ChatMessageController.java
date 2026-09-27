@@ -68,6 +68,7 @@ public class ChatMessageController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getMessages(
+            @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Long before,
             @RequestParam(required = false) Long after,
             @RequestParam(defaultValue = "50") int limit,
@@ -93,19 +94,36 @@ public class ChatMessageController {
             );
         }
 
+        if (keyword != null && keyword.isBlank()) {
+            throw new InvalidRequestException(
+                    "검색어는 비어 있을 수 없습니다."
+            );
+        }
+
         List<ChatMessageResponse> response;
 
-        if (before != null) {
+        if (keyword != null) {
+            response = chatMessageService.searchMessages(
+                    keyword,
+                    limit,
+                    category
+            );
+        } else if (before != null) {
             response = chatMessageService.getPreviousMessages(
-                    before, limit, category
+                    before,
+                    limit,
+                    category
             );
         } else if (after != null) {
             response = chatMessageService.getAfterMessages(
-                    after, limit, category
+                    after,
+                    limit,
+                    category
             );
         } else {
             response = chatMessageService.getRecentMessages(
-                    limit, category
+                    limit,
+                    category
             );
         }
 

@@ -130,4 +130,40 @@ public class ChatMessageService {
                         .build())
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public List<ChatMessageResponse> searchMessages(
+            String keyword,
+            int limit,
+            ChatCategory category
+    ) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        List<ChatMessage> messages;
+
+        if (category == null) {
+            messages = chatMessageRepository
+                    .findAllByContentContainingOrderByMessageIdAsc(
+                            keyword,
+                            pageable
+                    );
+        } else {
+            messages = chatMessageRepository
+                    .findAllByCategoryAndContentContainingOrderByMessageIdAsc(
+                            category,
+                            keyword,
+                            pageable
+                    );
+        }
+
+        return messages.stream()
+                .map(message -> ChatMessageResponse.builder()
+                        .messageId(message.getMessageId())
+                        .clientId(message.getClientId())
+                        .content(message.getContent())
+                        .category(message.getCategory())
+                        .createdAt(message.getCreatedAt())
+                        .build())
+                .toList();
+    }
 }
