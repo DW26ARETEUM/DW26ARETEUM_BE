@@ -110,20 +110,15 @@ public class ChatMessageController {
             );
         } else if (before != null) {
             response = chatMessageService.getPreviousMessages(
-                    before,
-                    limit,
-                    category
+                    before, limit, category
             );
         } else if (after != null) {
             response = chatMessageService.getAfterMessages(
-                    after,
-                    limit,
-                    category
+                    after, limit, category
             );
         } else {
             response = chatMessageService.getRecentMessages(
-                    limit,
-                    category
+                    limit, category
             );
         }
 
