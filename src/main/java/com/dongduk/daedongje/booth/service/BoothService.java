@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,43 +25,20 @@ public class BoothService {
 
     private final BoothOperationRepository boothOperationRepository;
 
-    // 부스 목록 조회: ids가 있으면 즐겨찾기(날짜 무관), 없으면 선택 날짜 기준으로 가져온 뒤 분류·검색어로 거르고 정렬
+    // 부스 목록 조회: 선택 날짜의 부스를 가져온 뒤 분류·검색어·찜 ID로 거르고 정렬해서 반환
     public List<BoothListResponse> getBooths(LocalDate date, BoothCategory category,
                                              String keyword, List<Long> ids) {
         String normalizedKeyword = normalizeKeyword(keyword);
         Set<Long> idSet = toIdSet(ids);
 
-        return findOperations(date, idSet).stream()
+        return boothOperationRepository.findAllByDateWithBooth(date).stream()
                 .filter(op -> category == null || op.getBooth().getCategory() == category)
                 .filter(op -> normalizedKeyword == null || matchesKeyword(op.getBooth(), normalizedKeyword))
+                .filter(op -> idSet == null || idSet.contains(op.getBooth().getId()))
                 .sorted(Comparator.comparing((BoothOperation op) -> op.getBooth().getCategory())
                         .thenComparing(BoothOperation::getMapNumber))
                 .map(BoothListResponse::from)
                 .toList();
-    }
-
-    // 조회 대상 고르기: 찜 ID가 없으면 그 날짜 전체, 있으면 찜한 부스를 날짜 상관없이 부스당 하나씩
-    private List<BoothOperation> findOperations(LocalDate date, Set<Long> idSet) {
-        if (idSet == null) {
-            return boothOperationRepository.findAllByDateWithBooth(date);
-        }
-        if (idSet.isEmpty()) {
-            return List.of();
-        }
-        return boothOperationRepository.findAllByBoothIdsWithBooth(idSet).stream()
-                .collect(Collectors.toMap(
-                        op -> op.getBooth().getId(),     // 부스 ID가 같으면 한 칸으로 합침
-                        op -> op,
-                        (a, b) -> pickPreferred(a, b, date)))
-                .values().stream()
-                .toList();
-    }
-
-    // 양일 운영 부스 중 보여줄 하루 고르기: 선택한 날짜 우선, 둘 다 아니면 더 이른 날짜
-    private BoothOperation pickPreferred(BoothOperation a, BoothOperation b, LocalDate date) {
-        if (a.getOperationDate().equals(date)) return a;
-        if (b.getOperationDate().equals(date)) return b;
-        return a.getOperationDate().isBefore(b.getOperationDate()) ? a : b;
     }
 
     // 검색어가 부스명 또는 운영 주체(동아리 등)에 포함되는지 확인 (운영 주체는 null일 수 있음)
